@@ -7,7 +7,7 @@ const userController = require('./userController');
 const apiController = require('./apiController'); 
 
 const mongoose = require('mongoose'); 
-const MLAB_URI = 'mongodb://admin:admin0@ds245250.mlab.com:45250/gingkony4';
+const MLAB_URI = 'mongodb://admin:admin0000@ds057234.mlab.com:57234/gingko-iteration';
 mongoose.connect(MLAB_URI);
 mongoose.connection.once('open', () => { 
 	console.log('Connected to Database'); 
@@ -22,9 +22,9 @@ app.post('/signup', userController.createUser);
 app.post('/login', 	userController.verifyUser,
 					apiController.makeInterestRequests);
 
+app.post('/addApi', userController.addInterest, apiController.addApi);
+
 app.post('/settings', userController.defaultInterest, (req, res) => {
-	console.log('updated interest1 is : ', res.body);
-	console.log('updated interest2 is : ', req.body);
 });
 
 
