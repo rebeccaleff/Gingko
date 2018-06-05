@@ -17,7 +17,15 @@ import Dropdown from './Dropdown';
 class Feed extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {};
+    this.updateSubscriptions = this.updateSubscriptions.bind(this);
+    // add initial state for feed component
+    // bind function
     console.log('Feed props are', props);
+  }
+
+  updateSubscriptions() {
+    console.log('method passed down to props');
   }
 
   render() {
@@ -29,12 +37,12 @@ class Feed extends React.Component {
     let displayArr = []; 
     for (let i = 0; i < interests.length; i++) { 
       console.log('displaying api comp for',interests[i], apiData[i])
-      if (interests[i] === 0) displayArr.push(<ApiZeroDisplay info={apiData[i]}/>);
-      else if (interests[i] === 1) displayArr.push(<ApiOneDisplay info={apiData[i]}/>);
-      else if (interests[i] === 2) displayArr.push(<ApiTwoDisplay info={apiData[i]}/>);
+      if (interests[i] === '0') displayArr.push(<ApiZeroDisplay info={apiData[i]}/>);
+      else if (interests[i] === '1') displayArr.push(<ApiOneDisplay info={apiData[i]}/>);
+      else if (interests[i] === '2') displayArr.push(<ApiTwoDisplay info={apiData[i]}/>);
     }
 
-    displayArr.push(<Dropdown title={'Option'} i={'drop'}/>);
+    displayArr.push(<Dropdown onClick={this.updateSubscriptions} title={'Option'} i={'drop'}/>);
 
     console.log(displayArr.length);
     return (
