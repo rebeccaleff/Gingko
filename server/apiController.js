@@ -1,10 +1,14 @@
 /* eslint-disable */
 const request = require('request');
 const apiController = {};
+const login = require('../db/loginSchema');
 
 // let apiLink = 'http://pokeapi.co/api/v2/pokemon/55/';
 // let apiLink = 'https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY';
 // let apiLink = 'https://swapi.co/api/films/1/';
+
+// SET UP AN MLAB/ RUN DB LOCALLY, CHANGE MAKEINTERESTREQUEST MIDDLEWARE
+
 
 const supportedApiLinks = {
 	'0': 'http://pokeapi.co/api/v2/pokemon/55/',
@@ -20,6 +24,28 @@ apiController.makeSingleReq = (req, expRes, next) => {
 	});
 };
 
+apiController.addInterests = (req,res) => {
+	// console.log(req.body);
+	// res.send(req.body);
+	const username = req.body.username;
+	const interest = req.body.interest;
+	login.findOne({"username": username}, (err, result) => {
+		if (err) {
+			res.send(err);
+		} else {
+			result.interests.push(interest);
+			console.log(result);
+			result.save((err) => { 
+				if (err) {
+				res.send(err)
+			} else {
+				res.send(result);
+			}})
+			// res.send(result);
+		}
+	})
+};
+
 apiController.makeInterestRequests = (req, expRes, next) => {
 	// Going to add onto the res.userInfo object that will eventually be sent to the user
 	// Interests to loop through should be in expRes.locals.userInfo.interests
@@ -31,7 +57,7 @@ apiController.makeInterestRequests = (req, expRes, next) => {
 	for (let i = 0; i < apiArr.length; i += 1) {
 
 		let newReqPromise = new Promise((resolve, reject) => {
-			request(supportedApiLinks[apiArr[i]], { json: true }, (err, apiRes, body) => {
+			request(req.body.interests[i], { json: true }, (err, apiRes, body) => {
 			  if (err) { 
 			  	console.log(err);
 			  	reject('err');
