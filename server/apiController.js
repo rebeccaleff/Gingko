@@ -11,7 +11,7 @@ const login = require('../db/loginSchema');
 
 
 const supportedApiLinks = {
-	'0': 'http://pokeapi.co/api/v2/pokemon/55/',
+	'0': 'http://pokeapi.co/api/v2/ability/4/',
 	'1': 'https://swapi.co/api/films/1/',
 	'2': 'https://api.sunrise-sunset.org/json?lat=40.727504&lng=-73.980065'
 }
@@ -57,7 +57,7 @@ apiController.makeInterestRequests = (req, expRes, next) => {
 	for (let i = 0; i < apiArr.length; i += 1) {
 
 		let newReqPromise = new Promise((resolve, reject) => {
-			request(req.body.interests[i], { json: true }, (err, apiRes, body) => {
+			request(supportedApiLinks[apiArr[i]], { json: true }, (err, apiRes, body) => {
 			  if (err) { 
 			  	console.log(err);
 			  	reject('err');
